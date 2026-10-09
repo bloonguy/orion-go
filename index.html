@@ -18,39 +18,39 @@ body {
 body[data-theme="mcweb"] { background: linear-gradient(135deg, #2d5016 0%, #4a7c2f 100%); }
 body[data-theme="music"] { background: linear-gradient(135deg, #74b9ff 0%, #a8d8ea 100%); }
 body[data-theme="nextcloud"] { background: linear-gradient(135deg, #1e5799 0%, #2989d8 100%); }
-body[data-theme="emby"] { background: linear-gradient(135deg, #2d6a4f 0%, #52b788 100%); }
-body[data-theme="reg"] { background: linear-gradient(135deg, #2d6a4f 0%, #52b788 100%); }
+body[data-theme="emby"] { background: linear-gradient(135deg, #74c69d 0%, #40916c 100%); }
+body[data-theme="reg"] { background: linear-gradient(135deg, #74c69d 0%, #40916c 100%); }
 
 .card {
   background: #fff;
   border-radius: 20px;
-  padding: 30px;
+  padding: 40px 30px;
   max-width: 400px;
   width: 100%;
   text-align: center;
   box-shadow: 0 20px 60px rgba(0,0,0,0.3);
 }
-.screenshot {
-  width: 100%;
-  border-radius: 12px;
-  margin-bottom: 20px;
-  display: block;
-}
 .icon {
-  width: 90px;
-  height: 90px;
+  width: 100px;
+  height: 100px;
   margin: 0 auto 20px;
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 44px;
+  font-size: 48px;
   color: #fff;
+  overflow: hidden;
+}
+.icon img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 body[data-theme="music"] .icon { background: linear-gradient(135deg, #74b9ff, #0984e3); }
-body[data-theme="nextcloud"] .icon { background: linear-gradient(135deg, #2989d8, #1e5799); }
-body[data-theme="emby"] .icon { background: linear-gradient(135deg, #52b788, #2d6a4f); }
-body[data-theme="reg"] .icon { background: linear-gradient(135deg, #52b788, #2d6a4f); }
+body[data-theme="nextcloud"] .icon { background: #0082c9; }
+body[data-theme="emby"] .icon { background: #123c42; }
+body[data-theme="reg"] .icon { background: #123c42; }
 
 h1 {
   font-size: 22px;
@@ -91,8 +91,7 @@ body[data-theme="reg"] .btn { background: linear-gradient(135deg, #52b788, #2d6a
 </head>
 <body data-theme="mcweb">
 <div class="card">
-  <img class="screenshot" id="screenshot" src="mcweb.png" alt="网站截图" style="display:none">
-  <div class="icon" id="icon" style="display:none">🎵</div>
+  <div class="icon" id="icon">⛏️</div>
   <h1 id="title">正在跳转...</h1>
   <p class="desc" id="desc">请点击下方按钮，在浏览器中打开网站</p>
   <a href="#" class="btn" id="openBtn">点击打开网站</a>
@@ -101,11 +100,11 @@ body[data-theme="reg"] .btn { background: linear-gradient(135deg, #52b788, #2d6a
 
 <script>
 const sites = {
-  mcweb: { name: 'MC 官网', url: 'https://mcweb.http.mifen.tech', type: 'img', img: 'mcweb.png', theme: 'mcweb' },
-  music: { name: '音乐站', url: 'https://music.http.mifen.tech', type: 'icon', icon: '🎵', theme: 'music' },
-  nextcloud: { name: '云盘', url: 'https://nextcloud.http.mifen.tech', type: 'icon', icon: '☁️', theme: 'nextcloud' },
-  emby: { name: 'Emby 媒体库', url: 'https://emby.http.mifen.tech', type: 'icon', icon: '🎬', theme: 'emby' },
-  reg: { name: 'Emby 注册', url: 'https://reg.http.mifen.tech', type: 'icon', icon: '🎬', theme: 'reg' }
+  mcweb: { name: 'MC 官网', url: 'https://mcweb.http.mifen.tech', iconType: 'img', icon: 'mcweb.png', theme: 'mcweb' },
+  music: { name: '音乐站', url: 'https://music.http.mifen.tech', iconType: 'text', icon: '🎵', theme: 'music' },
+  nextcloud: { name: '云盘', url: 'https://nextcloud.http.mifen.tech', iconType: 'text', icon: '☁️', theme: 'nextcloud' },
+  emby: { name: 'Emby 媒体库', url: 'https://emby.http.mifen.tech', iconType: 'text', icon: '▶️', theme: 'emby' },
+  reg: { name: 'Emby 注册', url: 'https://reg.http.mifen.tech', iconType: 'text', icon: '▶️', theme: 'reg' }
 };
 
 const params = new URLSearchParams(window.location.search);
@@ -113,15 +112,12 @@ const to = params.get('to') || 'mcweb';
 const site = sites[to] || sites.mcweb;
 
 document.body.setAttribute('data-theme', site.theme);
+const iconEl = document.getElementById('icon');
 
-if (site.type === 'img') {
-  document.getElementById('screenshot').style.display = 'block';
-  document.getElementById('icon').style.display = 'none';
-  document.getElementById('screenshot').src = site.img;
+if (site.iconType === 'img') {
+  iconEl.innerHTML = '<img src="' + site.icon + '" alt="">';
 } else {
-  document.getElementById('screenshot').style.display = 'none';
-  document.getElementById('icon').style.display = 'flex';
-  document.getElementById('icon').textContent = site.icon;
+  iconEl.textContent = site.icon;
 }
 
 document.getElementById('title').textContent = site.name;
