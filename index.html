@@ -36,6 +36,22 @@ body[data-theme="reg"] { background: linear-gradient(135deg, #2d6a4f 0%, #52b788
   margin-bottom: 20px;
   display: block;
 }
+.icon {
+  width: 90px;
+  height: 90px;
+  margin: 0 auto 20px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 44px;
+  color: #fff;
+}
+body[data-theme="music"] .icon { background: linear-gradient(135deg, #74b9ff, #0984e3); }
+body[data-theme="nextcloud"] .icon { background: linear-gradient(135deg, #2989d8, #1e5799); }
+body[data-theme="emby"] .icon { background: linear-gradient(135deg, #52b788, #2d6a4f); }
+body[data-theme="reg"] .icon { background: linear-gradient(135deg, #52b788, #2d6a4f); }
+
 h1 {
   font-size: 22px;
   color: #333;
@@ -75,7 +91,8 @@ body[data-theme="reg"] .btn { background: linear-gradient(135deg, #52b788, #2d6a
 </head>
 <body data-theme="mcweb">
 <div class="card">
-  <img class="screenshot" id="screenshot" src="mcweb.png" alt="网站截图">
+  <img class="screenshot" id="screenshot" src="mcweb.png" alt="网站截图" style="display:none">
+  <div class="icon" id="icon" style="display:none">🎵</div>
   <h1 id="title">正在跳转...</h1>
   <p class="desc" id="desc">请点击下方按钮，在浏览器中打开网站</p>
   <a href="#" class="btn" id="openBtn">点击打开网站</a>
@@ -84,11 +101,11 @@ body[data-theme="reg"] .btn { background: linear-gradient(135deg, #52b788, #2d6a
 
 <script>
 const sites = {
-  mcweb: { name: 'MC 官网', url: 'https://mcweb.http.mifen.tech', img: 'mcweb.png', theme: 'mcweb' },
-  music: { name: '音乐站', url: 'https://music.http.mifen.tech', img: 'music.png', theme: 'music' },
-  nextcloud: { name: '云盘', url: 'https://nextcloud.http.mifen.tech', img: 'nextcloud.png', theme: 'nextcloud' },
-  emby: { name: 'Emby 媒体库', url: 'https://emby.http.mifen.tech', img: 'emby.png', theme: 'emby' },
-  reg: { name: 'Emby 注册', url: 'https://reg.http.mifen.tech', img: 'reg.png', theme: 'reg' }
+  mcweb: { name: 'MC 官网', url: 'https://mcweb.http.mifen.tech', type: 'img', img: 'mcweb.png', theme: 'mcweb' },
+  music: { name: '音乐站', url: 'https://music.http.mifen.tech', type: 'icon', icon: '🎵', theme: 'music' },
+  nextcloud: { name: '云盘', url: 'https://nextcloud.http.mifen.tech', type: 'icon', icon: '☁️', theme: 'nextcloud' },
+  emby: { name: 'Emby 媒体库', url: 'https://emby.http.mifen.tech', type: 'icon', icon: '🎬', theme: 'emby' },
+  reg: { name: 'Emby 注册', url: 'https://reg.http.mifen.tech', type: 'icon', icon: '🎬', theme: 'reg' }
 };
 
 const params = new URLSearchParams(window.location.search);
@@ -96,7 +113,17 @@ const to = params.get('to') || 'mcweb';
 const site = sites[to] || sites.mcweb;
 
 document.body.setAttribute('data-theme', site.theme);
-document.getElementById('screenshot').src = site.img;
+
+if (site.type === 'img') {
+  document.getElementById('screenshot').style.display = 'block';
+  document.getElementById('icon').style.display = 'none';
+  document.getElementById('screenshot').src = site.img;
+} else {
+  document.getElementById('screenshot').style.display = 'none';
+  document.getElementById('icon').style.display = 'flex';
+  document.getElementById('icon').textContent = site.icon;
+}
+
 document.getElementById('title').textContent = site.name;
 document.getElementById('desc').textContent = '正在跳转到 ' + site.name + '，请点击按钮在浏览器中打开';
 document.getElementById('openBtn').href = site.url;
