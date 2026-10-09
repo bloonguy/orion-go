@@ -24,29 +24,18 @@ body[data-theme="reg"] { background: linear-gradient(135deg, #11998e 0%, #38ef7d
 .card {
   background: #fff;
   border-radius: 20px;
-  padding: 40px 30px;
+  padding: 30px;
   max-width: 400px;
   width: 100%;
   text-align: center;
   box-shadow: 0 20px 60px rgba(0,0,0,0.3);
 }
-.icon {
-  width: 80px;
-  height: 80px;
-  margin: 0 auto 20px;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 40px;
-  color: #fff;
+.screenshot {
+  width: 100%;
+  border-radius: 12px;
+  margin-bottom: 20px;
+  display: block;
 }
-body[data-theme="mcweb"] .icon { background: linear-gradient(135deg, #5c9e3e, #3d6b27); }
-body[data-theme="music"] .icon { background: linear-gradient(135deg, #b721ff, #662d8c); }
-body[data-theme="nextcloud"] .icon { background: linear-gradient(135deg, #2989d8, #1e5799); }
-body[data-theme="emby"] .icon { background: linear-gradient(135deg, #ea384d, #d31027); }
-body[data-theme="reg"] .icon { background: linear-gradient(135deg, #38ef7d, #11998e); }
-
 h1 {
   font-size: 22px;
   color: #333;
@@ -86,7 +75,7 @@ body[data-theme="reg"] .btn { background: linear-gradient(135deg, #38ef7d, #1199
 </head>
 <body data-theme="mcweb">
 <div class="card">
-  <div class="icon" id="icon">⛏️</div>
+  <img class="screenshot" id="screenshot" src="mcweb.png" alt="网站截图">
   <h1 id="title">正在跳转...</h1>
   <p class="desc" id="desc">请点击下方按钮，在浏览器中打开网站</p>
   <a href="#" class="btn" id="openBtn">点击打开网站</a>
@@ -95,11 +84,11 @@ body[data-theme="reg"] .btn { background: linear-gradient(135deg, #38ef7d, #1199
 
 <script>
 const sites = {
-  mcweb: { name: 'MC 官网', url: 'https://mcweb.http.mifen.tech', icon: '⛏️', theme: 'mcweb' },
-  music: { name: '音乐站', url: 'https://music.http.mifen.tech', icon: '🎵', theme: 'music' },
-  nextcloud: { name: '云盘', url: 'https://nextcloud.http.mifen.tech', icon: '☁️', theme: 'nextcloud' },
-  emby: { name: 'Emby 媒体库', url: 'https://emby.http.mifen.tech', icon: '🎬', theme: 'emby' },
-  reg: { name: 'Emby 注册', url: 'https://reg.http.mifen.tech', icon: '📝', theme: 'reg' }
+  mcweb: { name: 'MC 官网', url: 'https://mcweb.http.mifen.tech', img: 'mcweb.png', theme: 'mcweb' },
+  music: { name: '音乐站', url: 'https://music.http.mifen.tech', img: 'music.png', theme: 'music' },
+  nextcloud: { name: '云盘', url: 'https://nextcloud.http.mifen.tech', img: 'nextcloud.png', theme: 'nextcloud' },
+  emby: { name: 'Emby 媒体库', url: 'https://emby.http.mifen.tech', img: 'emby.png', theme: 'emby' },
+  reg: { name: 'Emby 注册', url: 'https://reg.http.mifen.tech', img: 'reg.png', theme: 'reg' }
 };
 
 const params = new URLSearchParams(window.location.search);
@@ -107,7 +96,7 @@ const to = params.get('to') || 'mcweb';
 const site = sites[to] || sites.mcweb;
 
 document.body.setAttribute('data-theme', site.theme);
-document.getElementById('icon').textContent = site.icon;
+document.getElementById('screenshot').src = site.img;
 document.getElementById('title').textContent = site.name;
 document.getElementById('desc').textContent = '正在跳转到 ' + site.name + '，请点击按钮在浏览器中打开';
 document.getElementById('openBtn').href = site.url;
